@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M. A. GAFFAR | Digital Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-navy: #002147;
+            --accent-gold: #D4AF37; /* Used for Name and SAVE button */
+            --text-white: #ffffff;
+            --text-grey: #cccccc; /* New professional color for designation */
+            --bg-light: #f0f2f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .card {
+            background: var(--primary-navy);
+            width: 100%;
+            max-width: 380px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header {
+            padding: 45px 20px 35px;
+            background: linear-gradient(145deg, #002147, #003366);
+            border-bottom: 4px solid var(--accent-gold);
+        }
+
+        .profile-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-gold);
+            margin-bottom: 15px;
+            background: #fff; /* White background for the logo */
+            padding: 10px; /* Space around the logo */
+            object-fit: contain; /* Ensures the logo fits well */
+        }
+
+        h1 { 
+            color: var(--text-white); 
+            font-size: 1.5rem; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+        }
+
+        .designation { 
+            color: var(--text-grey); /* Updated to professional grey */
+            font-size: 0.9rem; 
+            margin-top: 8px; 
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .card-body { padding: 30px 25px 30px; }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Buttons that keep gold accent */
+        .btn-save { background-color: var(--accent-gold); color: var(--primary-navy); }
+        .btn-outline { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(212,175,55,0.3); }
+        
+        /* WhatsApp button stays green */
+        .btn-whatsapp { background-color: #25D366; color: white; }
+
+        .action-btn i { margin-right: 12px; font-size: 1.2rem; width: 25px; }
+        .action-btn:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        #toast {
+            visibility: hidden;
+            min-width: 220px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein_toast 0.5s, fadeout_toast 0.5s 2.5s;
+        }
+
+        @keyframes fadein_toast { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout_toast { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <img src="logo.png" alt="M. A. GAFFAR" class="profile-img">
+            <h1>M. A. GAFFAR</h1>
+            <p class="designation">Senior Officer<br>Sonali Bank PLC</p>
+        </div>
+
+        <div class="card-body">
+            <button class="action-btn btn-save" onclick="handleSaveContact()">
+                <i class="fas fa-user-plus"></i> Save Contact
+            </button>
+
+            <a href="tel:+8801685290277" class="action-btn btn-outline">
+                <i class="fas fa-phone-alt"></i> Call Now
+            </a>
+
+            <a href="https://wa.me/8801685290277" class="action-btn btn-whatsapp" target="_blank">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+
+            <a href="mailto:bmgaffar8@gmail.com" class="action-btn btn-outline">
+                <i class="fas fa-envelope"></i> Email Me
+            </a>
+        </div>
+    </div>
+
+    <div id="toast">Opening Contact File...</div>
+
+    <script>
+        function showToast() {
+            var x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        function handleSaveContact() {
+            showToast();
+            setTimeout(() => {
+                downloadVCF();
+            }, 600);
+        }
+
+        function downloadVCF() {
+            const vCardData = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                'FN:M. A. GAFFAR',
+                'N:GAFFAR;M.;A.;;',
+                'ORG:Sonali Bank PLC',
+                'TITLE:Senior Officer',
+                'TEL;TYPE=CELL,VOICE:+8801685290277',
+                'EMAIL;TYPE=PREF,INTERNET:bmgaffar8@gmail.com',
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'M_A_GAFFAR.vcf');
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(() => {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        }
+    </script>
+
+</body>
+</html>
