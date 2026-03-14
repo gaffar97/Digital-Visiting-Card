@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M. A. GAFFAR | Digital Card</title>
+    <title>M. A. GAFFAR | Digital Contact Card</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-navy: #002147;
-            --accent-gold: #D4AF37; /* Used for Name and SAVE button */
+            --accent-gold: #D4AF37;
             --text-white: #ffffff;
-            --text-grey: #cccccc; /* New professional color for designation */
+            --text-grey: #cccccc;
             --bg-light: #f0f2f5;
         }
 
@@ -48,32 +48,47 @@
         }
 
         .profile-img {
-            width: 110px;
-            height: 110px;
+            width: 115px;
+            height: 115px;
             border-radius: 50%;
             border: 3px solid var(--accent-gold);
             margin-bottom: 15px;
-            background: #fff; /* White background for the logo */
-            padding: 10px; /* Space around the logo */
-            object-fit: contain; /* Ensures the logo fits well */
+            background: #fff;
+            padding: 10px;
+            object-fit: contain;
         }
 
         h1 { 
             color: var(--text-white); 
-            font-size: 1.5rem; 
+            font-size: 1.55rem; 
             letter-spacing: 1.5px; 
             text-transform: uppercase; 
         }
 
-        .designation { 
-            color: var(--text-grey); /* Updated to professional grey */
-            font-size: 0.9rem; 
-            margin-top: 8px; 
-            font-weight: 500;
-            line-height: 1.4;
+        .designation-container {
+            margin-top: 10px;
+            color: var(--text-grey);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.5;
         }
 
-        .card-body { padding: 30px 25px 30px; }
+        .location-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: var(--text-grey);
+        }
+
+        .location-info i {
+            margin-right: 6px;
+            color: var(--accent-gold); /* Gold icon for visibility */
+            font-size: 0.9rem;
+        }
+
+        .card-body { padding: 30px 25px 35px; }
 
         .action-btn {
             display: flex;
@@ -91,11 +106,8 @@
             cursor: pointer;
         }
 
-        /* Buttons that keep gold accent */
         .btn-save { background-color: var(--accent-gold); color: var(--primary-navy); }
         .btn-outline { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(212,175,55,0.3); }
-        
-        /* WhatsApp button stays green */
         .btn-whatsapp { background-color: #25D366; color: white; }
 
         .action-btn i { margin-right: 12px; font-size: 1.2rem; width: 25px; }
@@ -115,11 +127,7 @@
             font-size: 0.9rem;
         }
 
-        #toast.show {
-            visibility: visible;
-            animation: fadein_toast 0.5s, fadeout_toast 0.5s 2.5s;
-        }
-
+        #toast.show { visibility: visible; animation: fadein_toast 0.5s, fadeout_toast 0.5s 2.5s; }
         @keyframes fadein_toast { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout_toast { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
@@ -130,7 +138,14 @@
         <div class="card-header">
             <img src="logo.png" alt="M. A. GAFFAR" class="profile-img">
             <h1>M. A. GAFFAR</h1>
-            <p class="designation">Senior Officer<br>Sonali Bank PLC</p>
+            <div class="designation-container">
+                <p>Senior Officer</p>
+                <p>Sonali Bank PLC</p>
+                <div class="location-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Jamal Khan Road Branch, Chattogram
+                </div>
+            </div>
         </div>
 
         <div class="card-body">
@@ -163,9 +178,7 @@
 
         function handleSaveContact() {
             showToast();
-            setTimeout(() => {
-                downloadVCF();
-            }, 600);
+            setTimeout(() => { downloadVCF(); }, 600);
         }
 
         function downloadVCF() {
@@ -174,10 +187,11 @@
                 'VERSION:3.0',
                 'FN:M. A. GAFFAR',
                 'N:GAFFAR;M.;A.;;',
-                'ORG:Sonali Bank PLC',
+                'ORG:Sonali Bank PLC;Jamal Khan Road Branch',
                 'TITLE:Senior Officer',
                 'TEL;TYPE=CELL,VOICE:+8801685290277',
                 'EMAIL;TYPE=PREF,INTERNET:bmgaffar8@gmail.com',
+                'ADR;TYPE=WORK:;;Jamal Khan Road;Chattogram;;;Bangladesh',
                 'END:VCARD'
             ].join('\n');
 
